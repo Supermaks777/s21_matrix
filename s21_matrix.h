@@ -23,8 +23,8 @@ int s21_create_matrix(int rows, int columns, matrix_t *result);
 void s21_remove_matrix(matrix_t *A);
 int s21_eq_matrix(matrix_t *A, matrix_t *B);
 int s21_sum_matrix(matrix_t *A, matrix_t *B, matrix_t *result);
-// int s21_sub_matrix(matrix_t *A, matrix_t *B, matrix_t *result);
-// int s21_mult_number(matrix_t *A, double number, matrix_t *result);
+int s21_sub_matrix(matrix_t *A, matrix_t *B, matrix_t *result);
+int s21_mult_number(matrix_t *A, double number, matrix_t *result);
 // int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result);
 // int s21_transpose(matrix_t *A, matrix_t *result);
 // int s21_calc_complements(matrix_t *A, matrix_t *result);
@@ -40,8 +40,8 @@ int s21_eq_size (matrix_t A, matrix_t B);
 int s21_abs(double val);
 int s21_eq_element (double val_1, double val_2);
 int s21_eq_content (matrix_t A, matrix_t B);
-int s21_is_valid_matrix(matrix_t check_matrix);
+int s21_is_valid_matrix(matrix_t * source);
 int s21_is_valid_element(double val);
-
+int s21_compatibility_size (matrix_t A, matrix_t B);
 
 #endif
