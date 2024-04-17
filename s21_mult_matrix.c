@@ -19,9 +19,7 @@ int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
         for (int i = 0; i < A->rows && err_code == OK; i++){
             for (int j = 0; j < B->columns && err_code == OK; j++){
                 double res = 0.0;
-                for (int k = 0; k < B->rows; k++) {
-                    res += A->matrix[i][k] * B->matrix[k][j];
-                }
+                for (int k = 0; k < B->rows; k++) res += A->matrix[i][k] * B->matrix[k][j];
                 if (s21_is_valid_element(res)) result->matrix[i][j] = res;
                 else err_code = CALCULATION_ERROR; 
             }
