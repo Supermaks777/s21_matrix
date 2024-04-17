@@ -22,5 +22,11 @@ int s21_eq_content (matrix_t A, matrix_t B){
 }
 
 int s21_is_valid_matrix(matrix_t check_matrix){
+//проверить: 
+//
     return 1;
+}
+
+int s21_is_valid_element(double val){
+    return !isnan(val) && !isinf(val);
 }
