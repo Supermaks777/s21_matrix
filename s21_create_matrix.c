@@ -14,8 +14,8 @@
  */
 int s21_create_matrix(int rows, int columns, matrix_t *result){
     int err_code = 0;
-    if (!result) err_code = 1;
-    else if (rows < 1 || columns < 1 || rows == columns == 1) err_code = 1;
+    if (!result) err_code = INCORRECT_MATRIX;
+    else if (rows < 1 || columns < 1 || rows == columns == 1) err_code = INCORRECT_MATRIX;
     else {
         // Инициализация структуры
         result->rows = rows;
@@ -24,7 +24,7 @@ int s21_create_matrix(int rows, int columns, matrix_t *result){
         // Выделение памяти под двумерный массив
         result->matrix = (double **)malloc(rows * sizeof(double *));
         for (int i = 0; i < rows && !err_code; i++) {
-            result->matrix[i] = (double *)malloc(columns * sizeof(double));
+            result->matrix[i] = calloc(columns, sizeof(double));
             if (!result->matrix[i]) err_code = 1;
         }
 

@@ -95,46 +95,95 @@ int s21_compatibility_size (matrix_t A, matrix_t B) {
  * @param A исходная матрица (matrix_t)
  * @return определитель (double)
   */
-double determinant_2x2(matrix_t* A) {
+double s21_determinant_2x2(matrix_t* A) {
   return A->matrix[0][0] * A->matrix[1][1] - A->matrix[0][1] * A->matrix[1][0];
 }
 
-// /**
-//  * @brief рассчитывает минор 
-//  *
-//  * @param src Source matrix.
-//  * @param row Selected row.
-//  * @param col Selected column.
-//  * @return Minor value.
-//  * @retval double
-//  */
-// double s21_get_minor(matrix_t* src, int row, int col) {
-//   if (is_incorrect_mat(src)) return 0;
-//   int sub_size = src->rows - 1;
-//   double res = 0;
-//   matrix_t sub_matrix = {0};
-//   create_sub_matrix(src, row, col, sub_size, &sub_matrix);
-//   if (sub_size == 2)
-//     res = determinant_2x2(&sub_matrix);
-//   else
-//     for (int column = 0; column < sub_size; column++) {
-//       int sign = (column % 2 == 0) ? 1 : -1;
-//       double value = sub_matrix.matrix[0][column];
-//       res += sign * value * s21_get_minor(&sub_matrix, 0, column);
-//     }
-//   s21_remove_matrix(&sub_matrix);
-//   return res;
-// }
-// void create_sub_matrix(matrix_t* src, int row, int col, int size,
-//                        matrix_t* result) {
-//   if (s21_create_matrix(size, size, result)) return;
-//   for (int r = 0, res_r = 0; r <= size; r++) {
-//     if (r == row) continue;
-//     for (int c = 0, res_c = 0; c <= size; c++) {
-//       if (c == col) continue;
-//       result->matrix[res_r][res_c] = src->matrix[r][c];
-//       res_c++;
-//     }
-//     res_r++;
-//   }
-// }
+/**
+ * @brief рассчитывает минор (определитель усеченной матрицы)
+ *
+ * @param source исходная матрица
+ * @param row строка заданного элемента исходной матрицы (int)
+ * @param column столбец заданного элемента исходной матрицы (int)
+ * @param err_code указатель на код ошибки (* int)
+ * @return резульат (double)
+ */
+double s21_get_minor(matrix_t* source, int row, int column, int * err_code) {
+//исходные данные считаю корректными
+    long double result = 0;
+    matrix_t sub_matrix = {0};
+    *err_code = s21_create_sub_matrix(source, row, column, source->rows - 1, &sub_matrix);
+    if (*err_code == OK) {
+        if (source->rows == 3) result = s21_determinant_2x2(&sub_matrix);
+        else {
+            double element_value;
+            int element_sign;
+            for (int i = 0; i < (source->rows - 1) && *err_code == OK; i++){
+                element_sign = (i %  2) ? 1 : -1;
+                element_value = source->matrix[0][i];
+                result += element_sign * element_value * s21_get_minor(&sub_matrix, 0, i, err_code);
+            }
+        }
+        s21_remove_matrix(&sub_matrix);
+    }
+    if (!s21_is_valid_element((double)result)) *err_code = CALCULATION_ERROR;
+    return (double) result;
+}
+
+/**
+ * @brief создает субматрицу, за исключением указанного столбца и строки
+ *
+ * @param source исходная матрица
+ * @param row_del строка заданного элемента исходной матрицы (int)
+ * @param column_del столбец заданного элемента исходной матрицы (int)
+ * @param result указатель результат (*result)
+ * @return код ошибки (int)
+ */
+int s21_create_sub_matrix(matrix_t* source, int row_del, int column_del, int size, matrix_t* result) {
+    int err_code = !s21_create_matrix(size, size, result);
+    if (err_code == OK) {
+        for (int row_src = 0, row_res = 0;  row_src < size; row_src++){
+            if (row_src = row_del) continue;
+            for (int column_src = 0, column_res; column_src < size; column_src++){
+                if (column_src = column_del) continue;
+                result->matrix[row_res][column_res] = source->matrix[row_src][column_src];
+                column_res++;
+            }
+            row_res++;
+        }
+    }
+    return err_code;
+}
+
+/**
+ * @brief заполняет матрицу арифметической последовательностью, заданной началом и шагом
+ *
+ * @param source исходная матрица
+ * @param start значение первого элемента матрицы (double)
+ * @param step шаг арифметической последовательности (double)
+ */
+void s21_initialize_matrix(matrix_t *source, double start, double step) {
+    if (s21_is_valid_matrix(source)) {
+        double current_value = start;
+        for (int i = 0; i < source->rows; i++) {
+            for (int j = 0; j < source->columns; j++) {
+                source->matrix[i][j] = current_value;
+                current_value += step;
+            }
+        }
+    }
+}
+
+/**
+ * @brief вывод на экран матрицы
+ *
+ * @param source исходная матрица
+ */
+void s21_print_matrix(matrix_t *source) {
+    if (s21_is_valid_matrix(source)) {
+        for (int i = 0; i < source->rows; i++) {
+            for (int j = 0; j < source->columns; j++) printf("%f\t", source->matrix[i][j]);
+            printf("\n");
+        }
+    }
+}
