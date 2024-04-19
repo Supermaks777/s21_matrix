@@ -54,14 +54,14 @@ int s21_eq_content (matrix_t A, matrix_t B){
 int s21_is_valid_matrix(matrix_t * source){
     int result = 1;
     if (!source || !source->matrix) result = 0;
-    if (source->rows < 1 || source->columns < 1 || (source->rows == source->columns == 1)) result = 0;
+    if (source->rows < 1 || source->columns < 1 || (source->rows == 1 && source->columns == 1)) result = 0;
     for (int i = 0; i < source->rows && result; i++){
         if (!source->matrix[i]) result = 0;
-        for (int j = 0; i < source->columns && result; j++){
+        for (int j = 0; j < source->columns && result; j++){
             if (!s21_is_valid_element(source->matrix[i][j])) result = 0;
         }
     }
-    return 0;
+    return result;
 }
 
 /**

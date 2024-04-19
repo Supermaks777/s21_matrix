@@ -15,27 +15,17 @@
 int s21_create_matrix(int rows, int columns, matrix_t *result){
     int err_code = 0;
     if (!result) err_code = INCORRECT_MATRIX;
-    else if (rows < 1 || columns < 1 || rows == columns == 1) err_code = INCORRECT_MATRIX;
+ 
+    else if (rows < 1 || columns < 1 || (rows == 1 && columns == 1)) err_code = INCORRECT_MATRIX;
     else {
-        // Инициализация структуры
         result->rows = rows;
         result->columns = columns;
-
-        // Выделение памяти под двумерный массив
-        result->matrix = (double **)malloc(rows * sizeof(double *));
-        for (int i = 0; i < rows && !err_code; i++) {
+        result->matrix = calloc(rows, sizeof(double *));
+        for (int i = 0; i < rows && err_code == OK; i++) {
             result->matrix[i] = calloc(columns, sizeof(double));
             if (!result->matrix[i]) err_code = 1;
         }
-
-        // Инициализация матрицы нулями
-        for (int i = 0; i < rows && !err_code; i++) {
-            for (int j = 0; j < columns; j++) {
-                result->matrix[i][j] = 0.0;
-            }
-        }    
     }
-
 //очищение памяти на случай, если ошибка случилась в процессе выделения памяти на строки (т.е. какие то строки уже были выделены)
     if (err_code && !!result){
         for (int i = 0; i < rows; i++) if (!!result->matrix[i]) free(result->matrix[i]);
