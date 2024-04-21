@@ -31,7 +31,7 @@ int s21_calc_complements(matrix_t *A, matrix_t *result);
 int s21_determinant(matrix_t *A, double *result);
 int s21_inverse_matrix(matrix_t *A, matrix_t *result);
 // char *s21_matrix_to_str(matrix_t *A, int precision);
-int s21_copy_matrix(matrix_t *source, matrix_t *copy);
+// int s21_copy_matrix(matrix_t *source, matrix_t *copy);
 
 
 

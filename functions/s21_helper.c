@@ -1,9 +1,10 @@
-#include "s21_matrix.h"
+#include "../s21_matrix.h"
+
 /**
  * @brief проверяет равенство размеров матрицы
  *
- * @param A первая матрица
- * @param B вторая матрица
+ * @param A первая матрица (matrix_t)
+ * @param B вторая матрица (matrix_t)
  * @return результат проверки (int)
  * @retval 0 - размеры НЕ равны.
  * @retval 1 - размеры равны.
@@ -28,19 +29,21 @@ int s21_eq_element (double val_1, double val_2) {
 /**
  * @brief проверяет равенство содержимого матриц
  *
- * @param A первая матрица
- * @param B вторая матрица
+ * @param A первая матрица (matrix_t)
+ * @param B вторая матрица (matrix_t)
  * @return результат проверки (int)
  * @retval 0 - содержимые матриц НЕ равны.
  * @retval 1 - содержимые матриц равны.
  */
 int s21_eq_content (matrix_t A, matrix_t B){
-    int result = 1;
-    for (int i = 0; i < A.rows && result; i++) {
-        for (int j = 0; j < A.columns && result; i++){
-            if (s21_eq_element(A.matrix[i][j], B.matrix[i][j])) result = 0;
+    int result = SUCCESS;
+    if (!s21_eq_size(A, B)) result = FAILURE;
+    for (int i = 0; i < A.rows && result == SUCCESS; i++) {
+        for (int j = 0; j < A.columns && result == SUCCESS; j++){
+            result = s21_eq_element(A.matrix[i][j], B.matrix[i][j]);
         }
     }
+    return result;
 }
 
 /**
@@ -52,13 +55,14 @@ int s21_eq_content (matrix_t A, matrix_t B){
  * @retval 1 - матрица корректна
  */
 int s21_is_valid_matrix(matrix_t * source){
-    int result = 1;
-    if (!source || !source->matrix) result = 0;
-    if (source->rows < 1 || source->columns < 1 || (source->rows == 1 && source->columns == 1)) result = 0;
-    for (int i = 0; i < source->rows && result; i++){
+    int result = SUCCESS;
+    if (!source) result = FAILURE;
+    else if (!source->matrix) result = FAILURE;
+    else if (source->rows < 1 || source->columns < 1 || (source->rows == 1 && source->columns == 1)) result = FAILURE;
+    for (int i = 0; result == SUCCESS && i < source->rows; i++){
         if (!source->matrix[i]) result = 0;
-        for (int j = 0; j < source->columns && result; j++){
-            if (!s21_is_valid_element(source->matrix[i][j])) result = 0;
+        for (int j = 0; result == SUCCESS && j < source->columns; j++){
+            if (!s21_is_valid_element(source->matrix[i][j])) result = FAILURE;
         }
     }
     return result;
@@ -143,9 +147,9 @@ int s21_create_sub_matrix(matrix_t* source, int row_del, int column_del, int siz
     int err_code = !s21_create_matrix(size, size, result);
     if (err_code == OK) {
         for (int row_src = 0, row_res = 0;  row_src < size; row_src++){
-            if (row_src = row_del) continue;
+            if (row_src == row_del) continue;
             for (int column_src = 0, column_res; column_src < size; column_src++){
-                if (column_src = column_del) continue;
+                if (column_src == column_del) continue;
                 result->matrix[row_res][column_res] = source->matrix[row_src][column_src];
                 column_res++;
             }

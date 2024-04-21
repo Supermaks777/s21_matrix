@@ -1,4 +1,4 @@
-#include "s21_matrix.h"
+#include "../s21_matrix.h"
 /**
  * @brief инвертирует матрицу
  * 

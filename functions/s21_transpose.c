@@ -1,4 +1,4 @@
-#include "s21_matrix.h"
+#include "../s21_matrix.h"
 /**
  * @brief создает транспонированную матрицу
  *
@@ -12,11 +12,12 @@
 int s21_transpose(matrix_t *A, matrix_t *result) {
     int err_code = OK;
     if (!s21_is_valid_matrix(A)) err_code = INCORRECT_MATRIX;
-    err_code = s21_create_matrix(A->columns,A->rows, result);
+    else if (!result) err_code = INCORRECT_MATRIX;
     if (err_code == OK) {
+        err_code = s21_create_matrix(A->columns,A->rows, result);
         for (int i = 0; i < A->rows; i++){
             for (int j = 0; j < A->columns; j++){
-                result->matrix[i][j] = A->matrix[i][j];
+                result->matrix[j][i] = A->matrix[i][j];
             }
         }
     }

@@ -1,4 +1,4 @@
-#include "s21_matrix.h"
+#include "../s21_matrix.h"
 
 /**
  * @brief формирует матрицу алгебраических дополнений
@@ -14,9 +14,10 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
     int err_code = OK;
     int element_sign;
     double element_value;
-    if (!s21_is_valid_matrix(A) || !result) err_code = INCORRECT_MATRIX;
-    if (A->rows != A->columns) err_code = CALCULATION_ERROR;
-    err_code = s21_create_matrix(A->rows,A->columns, result);
+    if (!s21_is_valid_matrix(A)) err_code = INCORRECT_MATRIX;
+    else if (!result) err_code = INCORRECT_MATRIX;
+    else if (A->rows != A->columns) err_code = CALCULATION_ERROR;
+    if (err_code == OK) err_code = s21_create_matrix(A->rows,A->columns, result);
     if (err_code == OK && A->rows == 2) {
         result->matrix[0][0] = A->matrix[1][1];
         result->matrix[0][1] = -A->matrix[1][0];
