@@ -87,8 +87,8 @@ dev_test: $(TEST_FILES) s21_matrix.a $(FUNC_FILES)
 
 
 win:
-	gcc main.c s21_*.c -o test1
-	./test1.exe
+	gcc main.c ./functions/s21_*.c -o test1_main
+	./test1_main.exe
 
 mac:
 	gcc main.c s21_*.c -o test1

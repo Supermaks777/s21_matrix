@@ -137,25 +137,33 @@ double s21_get_minor(matrix_t* source, int row, int column, int * err_code) {
 /**
  * @brief создает субматрицу, за исключением указанного столбца и строки
  *
- * @param source исходная матрица
+ * @param source исходная матрица (matrix_t *)
  * @param row_del строка заданного элемента исходной матрицы (int)
  * @param column_del столбец заданного элемента исходной матрицы (int)
+ * @param size разрер субматрицы матрицы (int)
  * @param result указатель результат (*result)
  * @return код ошибки (int)
  */
 int s21_create_sub_matrix(matrix_t* source, int row_del, int column_del, int size, matrix_t* result) {
-    int err_code = !s21_create_matrix(size, size, result);
+    int err_code = 0;
+    err_code = s21_create_matrix(size, size, result);
+    // printf("size: %d\n", size);
+    // printf("after create submatrix check: %d\n", err_code);
     if (err_code == OK) {
-        for (int row_src = 0, row_res = 0;  row_src < size; row_src++){
+        for (int row_src = 0, row_res = 0;  row_src <= size; row_src++){
             if (row_src == row_del) continue;
-            for (int column_src = 0, column_res; column_src < size; column_src++){
+            for (int column_src = 0, column_res = 0; column_src <= size; column_src++){
                 if (column_src == column_del) continue;
+                // printf("%d -- %d -- %d -- %d\n", row_src, row_res, column_src, column_res);
                 result->matrix[row_res][column_res] = source->matrix[row_src][column_src];
                 column_res++;
             }
             row_res++;
         }
     }
+    // printf("after fill submatrix check: %d\n", err_code);
+    // s21_print_matrix(result); 
+    // printf("\n");
     return err_code;
 }
 
@@ -191,3 +199,4 @@ void s21_print_matrix(matrix_t *source) {
         }
     }
 }
+

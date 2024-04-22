@@ -31,5 +31,6 @@ int s21_create_matrix(int rows, int columns, matrix_t *result){
     if (err_code != OK && !!result && rows > 0 && columns > 0){
         for (int i = 0; i < rows; i++) if (!!result->matrix[i]) free(result->matrix[i]);
     }
+    // printf("after create matrix check: %d\n", err_code);
     return err_code;
 }

@@ -48,5 +48,6 @@ double s21_get_minor(matrix_t* source, int row, int column, int * err_code);
 int s21_create_sub_matrix(matrix_t* source, int row_del, int column_del, int size, matrix_t* result);
 void s21_initialize_matrix(matrix_t *source, double start, double step);
 void s21_print_matrix(matrix_t *source);
+int get_valid_index(int index, int size);
 
 #endif

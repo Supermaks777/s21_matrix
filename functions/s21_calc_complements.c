@@ -17,7 +17,9 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
     if (!s21_is_valid_matrix(A)) err_code = INCORRECT_MATRIX;
     else if (!result) err_code = INCORRECT_MATRIX;
     else if (A->rows != A->columns) err_code = CALCULATION_ERROR;
+    // printf("start check: %d\n", err_code);
     if (err_code == OK) err_code = s21_create_matrix(A->rows,A->columns, result);
+    // printf("after create check: %d\n", err_code);
     if (err_code == OK && A->rows == 2) {
         result->matrix[0][0] = A->matrix[1][1];
         result->matrix[0][1] = -A->matrix[1][0];
@@ -26,6 +28,7 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
     } else if (err_code == OK){
         for (int i = 0; i < A->rows && err_code == OK; i++){
             for (int j = 0; j < A->columns && err_code == OK; j++){
+                // printf("cicle check: %d - %d - %d\n", i, j, err_code);
                 element_value = s21_get_minor(A, i, j, &err_code);
                 element_sign = pow(-1, i + j);
                 result->matrix[i][j] = element_sign * element_value;
