@@ -36,12 +36,11 @@ START_TEST(s21_calc_complements_3) {
   eq_matrix.matrix[1][2] = 8;
   eq_matrix.matrix[2][0] = -8, eq_matrix.matrix[2][1] = -2,
   eq_matrix.matrix[2][2] = 4;
-  printf("\nSEE HERE\n");
 
   int res = s21_calc_complements(&A, &result);
-  s21_print_matrix(&A);
-  s21_print_matrix(&result);
-  s21_print_matrix(&eq_matrix);
+  // s21_print_matrix(&A);
+  // s21_print_matrix(&result);
+  // s21_print_matrix(&eq_matrix);
 
   ck_assert_int_eq(res, OK);
   ck_assert_int_eq(s21_eq_matrix(&result, &eq_matrix), SUCCESS);

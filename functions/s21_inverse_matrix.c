@@ -14,8 +14,10 @@ int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
     double determinant = 0;
     if (!s21_is_valid_matrix(A) || !result) err_code = INCORRECT_MATRIX;
     else if (A->rows != A->columns) err_code = CALCULATION_ERROR;
-    else if (!s21_determinant(A, &determinant)) err_code = CALCULATION_ERROR;
-
+    else err_code = s21_determinant(A, &determinant);
+    printf("det: %d\n", determinant);
+    // else if (!s21_determinant(A, &determinant)) err_code = CALCULATION_ERROR;
+    printf("err_cod after det: %d\n", err_code);
     if (err_code == OK && A->rows == 1) {
         if (s21_create_matrix(1, 1, result) == OK) result->matrix[0][0] = 1 / A->matrix[0][0];
     } else {

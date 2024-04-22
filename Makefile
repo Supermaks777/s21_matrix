@@ -91,8 +91,8 @@ win:
 	./test1_main.exe
 
 mac:
-	gcc main.c s21_*.c -o test1
-	./test1
+	gcc main.c ./functions/s21_*.c -o test2_main
+	./test2_main
 
 testy:
 	gcc s21_*.c ./tests/unit_tests.c -o my_testy

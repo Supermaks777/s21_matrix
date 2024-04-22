@@ -1,7 +1,7 @@
 #include "s21_test.h"
 
 START_TEST(s21_determinant_1) {
-  // failure with INCORRECT_MATRIX
+  // ошибка: некорректная матрица
   matrix_t A = {};
   double det = 0;
   ck_assert_int_eq(s21_determinant(&A, &det), INCORRECT_MATRIX);
@@ -9,7 +9,7 @@ START_TEST(s21_determinant_1) {
 END_TEST
 
 START_TEST(s21_determinant_2) {
-  // failure with non-square matrix
+  // ошибка: не квадратная матрица
   matrix_t A = {};
   double det = 0;
   s21_create_matrix(3, 2, &A);
@@ -20,7 +20,7 @@ START_TEST(s21_determinant_2) {
 END_TEST
 
 START_TEST(s21_determinant_3) {
-  // success with task reference values
+  // успех: заданные значения
   matrix_t A = {};
   double det = 0;
   s21_create_matrix(3, 3, &A);
@@ -32,7 +32,7 @@ START_TEST(s21_determinant_3) {
 END_TEST
 
 START_TEST(s21_determinant_4) {
-  // success with 2x2 matrix
+  // успех: матрица 2х2
   matrix_t A = {};
   double det = 0;
   s21_create_matrix(2, 2, &A);
@@ -44,7 +44,7 @@ START_TEST(s21_determinant_4) {
 END_TEST
 
 START_TEST(s21_determinant_5) {
-  // success with 1x1 matrix
+  // успех: матрица 1х1
   matrix_t A = {};
   double det = 0;
   s21_create_matrix(1, 1, &A);

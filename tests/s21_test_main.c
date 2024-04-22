@@ -12,8 +12,8 @@ int main(void) {
       // s21_mult_matrix_suite(),
       // s21_transpose_suite(),
       // s21_calc_complements_suite(),
-      s21_determinant_suite(),
-      // s21_inverse_matrix_suite(),
+      // s21_determinant_suite(),
+      s21_inverse_matrix_suite(),
 
       NULL};
   for (int i = 0; testing[i] != NULL; i++) {

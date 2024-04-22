@@ -12,8 +12,6 @@
 
 #include "../s21_matrix.h"
 
-/* MEM PART*/
-// Suite *test_s21_memchr(void);
 Suite *s21_create_matrix_suite(void);
 Suite *s21_remove_matrix_suite(void);
 Suite *s21_eq_matrix_suite(void);

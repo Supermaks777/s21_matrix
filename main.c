@@ -1,17 +1,19 @@
 #include "s21_matrix.h"
 
 int main(){
-  // успех: матрица с заданными значениями элементов
   matrix_t A = {};
-  double det = 0;
-  s21_create_matrix(3, 3, &A);
-  s21_initialize_matrix(&A, 1, 1);
-  s21_print_matrix(&A);
-  printf("\n");
-  int res = s21_determinant(&A, &det);
-  printf("det (result): %f (%d)", det, res);
-  s21_remove_matrix(&A);
+  matrix_t result = {};
+  matrix_t eq_matrix = {};
+  printf("create_1: %d\n",s21_create_matrix(1, 1, &A));
+  printf("create_2: %d\n", s21_create_matrix(1, 1, &eq_matrix));
+  A.matrix[0][0] = 21;
+  eq_matrix.matrix[0][0] = 1.0 / 21.0;
 
+  printf("inverse: %d\n",s21_inverse_matrix(&A, &result));
+  printf("compare^ %d", s21_eq_matrix(&result, &eq_matrix));
+  s21_remove_matrix(&A);
+  s21_remove_matrix(&result);
+  s21_remove_matrix(&eq_matrix);
 
     return 0;
 }

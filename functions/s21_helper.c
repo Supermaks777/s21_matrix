@@ -58,7 +58,7 @@ int s21_is_valid_matrix(matrix_t * source){
     int result = SUCCESS;
     if (!source) result = FAILURE;
     else if (!source->matrix) result = FAILURE;
-    else if (source->rows < 1 || source->columns < 1 || (source->rows == 1 && source->columns == 1)) result = FAILURE;
+    else if (source->rows < 1 || source->columns < 1) result = FAILURE;
     for (int i = 0; result == SUCCESS && i < source->rows; i++){
         if (!source->matrix[i]) result = 0;
         for (int j = 0; result == SUCCESS && j < source->columns; j++){
@@ -97,9 +97,9 @@ int s21_compatibility_size (matrix_t A, matrix_t B) {
  * @brief рассчитывает определитель матрицы размерности 2
  *
  * @param A исходная матрица (matrix_t)
- * @return определитель (double)
+ * @return определитель (long double)
   */
-double s21_determinant_2x2(matrix_t* A) {
+long double s21_determinant_2x2(matrix_t* A) {
   return A->matrix[0][0] * A->matrix[1][1] - A->matrix[0][1] * A->matrix[1][0];
 }
 
@@ -200,3 +200,24 @@ void s21_print_matrix(matrix_t *source) {
     }
 }
 
+/**
+ * @brief проверяет валидность матрицы. 
+ * //проверяемые признаки: указатель на структуру, указатель на матрицу, указатели строк, валидность элементов матрицы
+ * @param source структура с матрицей (matrix_t)
+ * @return результат проверки (int)
+ * @retval 0 - матрица НЕ валидна, т.е. хотя бы одна проверка провалена
+ * @retval 1 - матрица корректна
+ */
+int s21_is_valid_for_det(matrix_t * source){
+    int result = SUCCESS;
+    if (!source) result = FAILURE;
+    else if (!source->matrix) result = FAILURE;
+    else if (source->rows < 1 || source->columns < 1) result = FAILURE;
+    for (int i = 0; result == SUCCESS && i < source->rows; i++){
+        if (!source->matrix[i]) result = 0;
+        for (int j = 0; result == SUCCESS && j < source->columns; j++){
+            if (!s21_is_valid_element(source->matrix[i][j])) result = FAILURE;
+        }
+    }
+    return result;
+}

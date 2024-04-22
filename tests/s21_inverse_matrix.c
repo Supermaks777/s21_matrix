@@ -2,7 +2,7 @@
 
 
 START_TEST(s21_inverse_matrix_1) {
-  // failure with INCORRECT_MATRIX
+  // ошибка: некорректная матрица
   matrix_t A = {};
   matrix_t result = {};
   ck_assert_int_eq(s21_inverse_matrix(&A, &result), INCORRECT_MATRIX);
@@ -10,7 +10,7 @@ START_TEST(s21_inverse_matrix_1) {
 END_TEST
 
 START_TEST(s21_inverse_matrix_2) {
-  // failure when matrix has determinant equal to zero
+  // ошибка: матрица с определителем = 0
   matrix_t A = {};
   matrix_t result = {};
   s21_create_matrix(3, 3, &A);
@@ -21,7 +21,7 @@ START_TEST(s21_inverse_matrix_2) {
 END_TEST
 
 START_TEST(s21_inverse_matrix_3) {
-  // failure with non-square matrix
+  // ошибка: неквадратная матрица
   matrix_t A = {};
   matrix_t result = {};
   s21_create_matrix(5, 3, &A);
@@ -32,7 +32,7 @@ START_TEST(s21_inverse_matrix_3) {
 END_TEST
 
 START_TEST(s21_inverse_matrix_4) {
-  // success matrix 1x1
+  // успех: матрица 1х1
   matrix_t A = {};
   matrix_t result = {};
   matrix_t eq_matrix = {};
@@ -49,7 +49,7 @@ START_TEST(s21_inverse_matrix_4) {
 END_TEST
 
 START_TEST(s21_inverse_matrix_5) {
-  // success with task reference values
+  // успех: матрица с заданными значениями
   matrix_t A = {};
   matrix_t result = {};
   matrix_t eq_matrix = {};
