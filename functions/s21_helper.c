@@ -14,6 +14,18 @@ int s21_eq_size (matrix_t A, matrix_t B) {
 }
 
 /**
+ * @brief проверяет что матрица квадратная
+ *
+ * @param source указатель на проверяемую матрицу (matrix_t *)
+ * @return результат проверки (int)
+ * @retval 0 - размеры НЕ равны.
+ * @retval 1 - размеры равны.
+ */
+int s21_squar_size (const matrix_t * source) {
+    return source->rows == source->columns;
+}
+
+/**
  * @brief проверяет равенство двух чисел с заданной точностью
  *
  * @param val_1 первое число (double)
@@ -41,28 +53,6 @@ int s21_eq_content (matrix_t A, matrix_t B){
     for (int i = 0; i < A.rows && result == SUCCESS; i++) {
         for (int j = 0; j < A.columns && result == SUCCESS; j++){
             result = s21_eq_element(A.matrix[i][j], B.matrix[i][j]);
-        }
-    }
-    return result;
-}
-
-/**
- * @brief проверяет валидность матрицы. 
- * //проверяемые признаки: указатель на структуру, указатель на матрицу, указатели строк, валидность элементов матрицы
- * @param source структура с матрицей (matrix_t)
- * @return результат проверки (int)
- * @retval 0 - матрица НЕ валидна, т.е. хотя бы одна проверка провалена
- * @retval 1 - матрица корректна
- */
-int s21_is_valid_matrix(matrix_t * source){
-    int result = SUCCESS;
-    if (!source) result = FAILURE;
-    else if (!source->matrix) result = FAILURE;
-    else if (source->rows < 1 || source->columns < 1) result = FAILURE;
-    for (int i = 0; result == SUCCESS && i < source->rows; i++){
-        if (!source->matrix[i]) result = 0;
-        for (int j = 0; result == SUCCESS && j < source->columns; j++){
-            if (!s21_is_valid_element(source->matrix[i][j])) result = FAILURE;
         }
     }
     return result;
@@ -202,22 +192,56 @@ void s21_print_matrix(matrix_t *source) {
 
 /**
  * @brief проверяет валидность матрицы. 
- * //проверяемые признаки: указатель на структуру, указатель на матрицу, указатели строк, валидность элементов матрицы
+ * //проверяемые признаки: указатель на структуру, размеры матрицы
+ * @param rows количество строк (int)
+ * @param columns количество столбцов (int)
  * @param source структура с матрицей (matrix_t)
  * @return результат проверки (int)
- * @retval 0 - матрица НЕ валидна, т.е. хотя бы одна проверка провалена
- * @retval 1 - матрица корректна
+ * @retval 0 - OK.
+ * @retval 1 - INCORRECT_MATRIX.
+ * @retval 2 - CALCULATION_ERROR.
  */
-int s21_is_valid_for_det(matrix_t * source){
-    int result = SUCCESS;
-    if (!source) result = FAILURE;
-    else if (!source->matrix) result = FAILURE;
-    else if (source->rows < 1 || source->columns < 1) result = FAILURE;
-    for (int i = 0; result == SUCCESS && i < source->rows; i++){
-        if (!source->matrix[i]) result = 0;
-        for (int j = 0; result == SUCCESS && j < source->columns; j++){
-            if (!s21_is_valid_element(source->matrix[i][j])) result = FAILURE;
-        }
+int s21_is_valid_matrix_mini(int rows, int columns, matrix_t *result){
+    return (!result || rows < 1 || columns < 1) ? INCORRECT_MATRIX : OK;
+}
+
+/**
+ * @brief проверяет валидность матрицы. 
+ * //дополнительные признаки: указатель на матрицу, указатели строк
+ * @param source структура с матрицей (matrix_t)
+ * @return результат проверки (int)
+ * @retval 0 - OK.
+ * @retval 1 - INCORRECT_MATRIX.
+ * @retval 2 - CALCULATION_ERROR.
+ */
+int s21_is_valid_matrix_midi(matrix_t * source){
+    int result = s21_is_valid_matrix_mini(source->rows, source->columns, source);
+    if (result == OK) {
+        if (!source->matrix) result = INCORRECT_MATRIX;
+        else for (int i = 0; result == OK && i < source->rows; i++) if (!source->matrix[i]) result = INCORRECT_MATRIX;
     }
     return result;
+}    
+
+/**
+ * @brief проверяет валидность матрицы. 
+ * //дополнительные признаки: содержимое матрицы (элементы)
+ * @param source структура с матрицей (matrix_t)
+ * @return результат проверки (int)
+ * @retval 0 - OK.
+ * @retval 1 - INCORRECT_MATRIX.
+ * @retval 2 - CALCULATION_ERROR.
+ */
+int s21_is_valid_matrix_full(matrix_t * source){
+    int result = s21_is_valid_matrix_mini(source->rows, source->columns, source->matrix);
+    if (result == OK) result = s21_is_valid_matrix_midi(source);
+    if (result == OK) {
+        for (int i = 0; result == OK && i < source->rows; i++){
+            for (int j = 0; result == OK && j < source->columns; j++){
+                if (!s21_is_valid_element(source->matrix[i][j])) result = INCORRECT_MATRIX;
+            }
+        }
+    return result;
+    }
 }
+

@@ -12,13 +12,9 @@
  * @retval 2 - Ошибка вычисления (несовпадающие размеры матриц; матрица, для которой нельзя провести вычисления и т.д.)
  */
 int s21_create_matrix(int rows, int columns, matrix_t *result){
-    int err_code = OK;
-    // printf("out_cicle\n");
-    if (!result) err_code = INCORRECT_MATRIX;
-    else if (rows < 1 || columns < 1) err_code = INCORRECT_MATRIX;
+    int err_code = s21_is_valid_matrix_mini(rows, columns, result);
 
     if (err_code == OK){
-        // printf("in_cicle\n");
         result->rows = rows;
         result->columns = columns;
         result->matrix = calloc(rows, sizeof(double *));
@@ -31,6 +27,6 @@ int s21_create_matrix(int rows, int columns, matrix_t *result){
     if (err_code != OK && !!result && rows > 0 && columns > 0){
         for (int i = 0; i < rows; i++) if (!!result->matrix[i]) free(result->matrix[i]);
     }
-    // printf("after create matrix check: %d\n", err_code);
+
     return err_code;
 }

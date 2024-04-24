@@ -40,7 +40,7 @@ int s21_eq_size (matrix_t A, matrix_t B);
 int s21_abs(double val);
 int s21_eq_element (double val_1, double val_2);
 int s21_eq_content (matrix_t A, matrix_t B);
-int s21_is_valid_matrix(matrix_t * source);
+// int s21_is_valid_matrix(matrix_t * source);
 int s21_is_valid_element(double val);
 int s21_compatibility_size (matrix_t A, matrix_t B);
 long double s21_determinant_2x2(matrix_t* A);
@@ -50,5 +50,9 @@ void s21_initialize_matrix(matrix_t *source, double start, double step);
 void s21_print_matrix(matrix_t *source);
 int get_valid_index(int index, int size);
 int s21_is_valid_for_det(matrix_t * source);
+int s21_is_valid_matrix_mini(int rows, int columns, matrix_t *result);
+int s21_is_valid_matrix_midi(matrix_t * source);
+int s21_is_valid_matrix_full(matrix_t * source);
+int s21_squar_size (const matrix_t * source);
 
 #endif
