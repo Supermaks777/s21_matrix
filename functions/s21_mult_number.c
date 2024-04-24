@@ -11,19 +11,18 @@
  * @retval 2 - CALCULATION_ERROR.
  */
 int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
-    int err_code = OK;
-    double sum = 0.0;
-    if (!s21_is_valid_matrix(A)) err_code = INCORRECT_MATRIX;
-    else if (!s21_is_valid_element(number)) err_code = CALCULATION_ERROR;
-    err_code = s21_create_matrix(A->rows,A->columns, result);
-    if (err_code == OK) {
-        for (int i = 0; i < A->rows && err_code == OK; i++){
-            for (int j = 0; j < A->columns && err_code == OK; j++){
-                sum = A->matrix[i][j] * number;
-                if (s21_is_valid_element(sum)) result->matrix[i][j] = sum;
-                else err_code = CALCULATION_ERROR; 
-            }
+    double mult = 0.0;
+    int err_code = s21_is_valid_matrix_full(A);
+    if (err_code == OK) err_code = s21_is_valid_element(number);
+    if (err_code == OK) err_code = s21_create_matrix(A->rows,A->columns, result);
+
+    for (int i = 0; err_code == OK && i < A->rows; i++){
+        for (int j = 0; err_code == OK && j < A->columns; j++){
+            mult = A->matrix[i][j] * number;
+            err_code = s21_is_valid_element(mult);
+            if (err_code == 0) result->matrix[i][j] = mult;
         }
     }
+    // printf("err_code^ %d\n", err_code);
     return err_code;
 }

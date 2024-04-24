@@ -45,6 +45,10 @@ START_TEST(s21_mult_number_4) {
   double number = 3;
   s21_create_matrix(3, 3, &A);
   s21_create_matrix(3, 3, &eq_matrix);
+  // s21_mult_number(&A, number, &result);
+  // s21_print_matrix(&A);
+  // s21_print_matrix(&eq_matrix);
+  // s21_print_matrix(&result);
   ck_assert_int_eq(s21_mult_number(&A, number, &result), OK);
   ck_assert_int_eq(s21_eq_matrix(&result, &eq_matrix), SUCCESS);
   s21_remove_matrix(&A);
