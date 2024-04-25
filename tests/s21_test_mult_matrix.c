@@ -20,7 +20,7 @@ START_TEST(s21_mult_matrix_2) {
   s21_create_matrix(3, 3, &B);
   s21_initialize_matrix(&A, 1, 1);
   B.matrix[2][2] = INFINITY;
-  ck_assert_int_eq(s21_mult_matrix(&A, &B, &result), INCORRECT_MATRIX);
+  ck_assert_int_eq(s21_mult_matrix(&A, &B, &result), CALCULATION_ERROR);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
   s21_remove_matrix(&result);

@@ -12,8 +12,7 @@
  * @retval 2 - Ошибка вычисления (несовпадающие размеры матриц; матрица, для которой нельзя провести вычисления и т.д.)
  */
 int s21_create_matrix(int rows, int columns, matrix_t *result){
-    int err_code = s21_is_valid_matrix_mini(rows, columns, result);
-    err_code = (!result || rows < 1 || columns < 1) ? INCORRECT_MATRIX : OK;
+    int err_code = (!result || rows < 1 || columns < 1) ? INCORRECT_MATRIX : OK;
 
     if (err_code == OK){
         result->rows = rows;

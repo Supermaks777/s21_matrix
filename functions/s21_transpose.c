@@ -10,9 +10,8 @@
  * @retval 2 - CALCULATION_ERROR.
  */
 int s21_transpose(matrix_t *A, matrix_t *result) {
-    int err_code = OK;
-    if (!s21_is_valid_matrix(A)) err_code = INCORRECT_MATRIX;
-    else if (!result) err_code = INCORRECT_MATRIX;
+    int err_code = s21_is_valid_result_ptr(result);
+    if (err_code == OK) err_code = s21_is_valid_matrix_full(A);
     if (err_code == OK) {
         err_code = s21_create_matrix(A->columns,A->rows, result);
         for (int i = 0; i < A->rows; i++){

@@ -12,17 +12,18 @@
  */
 int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
     double mult = 0.0;
-    int err_code = s21_is_valid_matrix_full(A);
+    int err_code = s21_is_valid_result_ptr(result);
+    if (err_code == OK) err_code = s21_is_valid_matrix_full(A);
     if (err_code == OK) err_code = s21_is_valid_element(number);
     if (err_code == OK) err_code = s21_create_matrix(A->rows,A->columns, result);
-
-    for (int i = 0; err_code == OK && i < A->rows; i++){
-        for (int j = 0; err_code == OK && j < A->columns; j++){
-            mult = A->matrix[i][j] * number;
-            err_code = s21_is_valid_element(mult);
-            if (err_code == 0) result->matrix[i][j] = mult;
+    if (err_code == OK){
+        for (int i = 0; err_code == OK && i < A->rows; i++){
+            for (int j = 0; err_code == OK && j < A->columns; j++){
+                mult = A->matrix[i][j] * number;
+                err_code = s21_is_valid_element(mult);
+                if (err_code == 0) result->matrix[i][j] = mult;
+            }
         }
     }
-    // printf("err_code^ %d\n", err_code);
     return err_code;
 }

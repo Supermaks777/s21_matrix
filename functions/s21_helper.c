@@ -1,5 +1,6 @@
 #include "../s21_matrix.h"
 
+
 /**
  * @brief проверяет равенство размеров матрицы
  *
@@ -10,8 +11,8 @@
  * @retval 1 - INCORRECT_MATRIX.
  * @retval 2 - CALCULATION_ERROR.
  */
-int s21_eq_size (matrix_t A, matrix_t B) {
-    return (A.rows != B.rows || A.columns != B.columns) ? CALCULATION_ERROR : OK;
+int s21_eq_size (const matrix_t * A, const matrix_t * B) {
+    return (A->rows != B->rows || A->columns != B->columns) ? CALCULATION_ERROR : OK;
 }
 
 /**
@@ -37,7 +38,6 @@ int s21_squar_size (const matrix_t * source) {
  * @retval 1 - числа равны.
  */
 int s21_eq_element (double val_1, double val_2) {
-    // printf("%f -- %f -- %d\n", val_1, val_2, (fabs(val_1 - val_2) < S21_PRECISION));
     return fabs(val_1 - val_2) < S21_PRECISION;
 }
 
@@ -50,18 +50,16 @@ int s21_eq_element (double val_1, double val_2) {
  * @retval 0 - содержимые матриц НЕ равны.
  * @retval 1 - содержимые матриц равны.
  */
-int s21_eq_content (matrix_t A, matrix_t B){
+int s21_eq_content (const matrix_t *A, const matrix_t *B){
     int result = SUCCESS;
     if (s21_eq_size(A, B)) result = FAILURE;
-    for (int i = 0; i < A.rows && result == SUCCESS; i++) {
-        for (int j = 0; j < A.columns && result == SUCCESS; j++){
-            result = s21_eq_element(A.matrix[i][j], B.matrix[i][j]);
+    for (int i = 0; i < A->rows && result == SUCCESS; i++) {
+        for (int j = 0; j < A->columns && result == SUCCESS; j++){
+            result = s21_eq_element(A->matrix[i][j], B->matrix[i][j]);
         }
     }
     return result;
 }
-
-
 
 /**
  * @brief проверяет совместимость размеров матрицы (число столбцов одной матрицы равно число строк другой и наоборот)
@@ -73,50 +71,32 @@ int s21_eq_content (matrix_t A, matrix_t B){
  * @retval 1 - INCORRECT_MATRIX.
  * @retval 2 - CALCULATION_ERROR.
  */
-int s21_compatibility_size (matrix_t A, matrix_t B) {
-    return (A.columns != B.rows) ? CALCULATION_ERROR : OK;
+int s21_compatibility_size (const matrix_t * A, const matrix_t * B) {
+    return (A->columns != B->rows) ? CALCULATION_ERROR : OK;
 }
 
 /**
- * @brief рассчитывает определитель матрицы размерности 2
+ * @brief рассчитывает минор (определитель субматрицы, т.е. усеченной по выбранным строке и столбцу)
  *
- * @param A исходная матрица (matrix_t)
- * @return определитель (long double)
-  */
-long double s21_determinant_2x2(matrix_t* A) {
-  return A->matrix[0][0] * A->matrix[1][1] - A->matrix[0][1] * A->matrix[1][0];
-}
-
-/**
- * @brief рассчитывает минор (определитель усеченной матрицы)
- *
- * @param source исходная матрица
- * @param row строка заданного элемента исходной матрицы (int)
- * @param column столбец заданного элемента исходной матрицы (int)
- * @param err_code указатель на код ошибки (* int)
- * @return резульат (double)
+ * @param source структура с исходной матрицей (matrix_t *)
+ * @param row выбранная строка (int)
+ * @param column выбранный столбец (int)
+ * @param result структура с исходной матрицей (double *)
+ * @return код ошибки (int)
+ * @retval 0 - OK.
+ * @retval 1 - INCORRECT_MATRIX.
+ * @retval 2 - CALCULATION_ERROR.
  */
-double s21_get_minor(matrix_t* source, int row, int column, int * err_code) {
+int s21_get_minor(const matrix_t* source, int row, int column, double * result) {
 //исходные данные считаю корректными
-    long double result = 0;
+    double determinant = 0.0;
     matrix_t sub_matrix = {0};
-    *err_code = s21_create_sub_matrix(source, row, column, source->rows - 1, &sub_matrix);
-    if (*err_code == OK) {
-        if (source->rows == 3) result = s21_determinant_2x2(&sub_matrix);
-        else {
-            double element_value;
-            int element_sign;
-            for (int i = 0; i < (source->rows - 1) && *err_code == OK; i++){
-                element_sign = (i %  2) ? 1 : -1;
-                element_value = source->matrix[0][i];
-                result += element_sign * element_value * s21_get_minor(&sub_matrix, 0, i, err_code);
-            }
-        }
-        s21_remove_matrix(&sub_matrix);
-    }
-    // if (s21_is_valid_element((double)result)) *err_code = CALCULATION_ERROR;
-    *err_code = (s21_is_valid_element((double)result));
-    return (double) result;
+    int err_code = s21_create_sub_matrix(source, row, column, source->rows - 1, &sub_matrix);
+    if (err_code == OK) err_code = s21_determinant(&sub_matrix, &determinant);
+    s21_remove_matrix(&sub_matrix);
+    if (err_code == OK) err_code = s21_is_valid_element(determinant);
+    if (err_code == OK) *result = determinant;
+    return err_code;
 }
 
 /**
@@ -129,26 +109,19 @@ double s21_get_minor(matrix_t* source, int row, int column, int * err_code) {
  * @param result указатель результат (*result)
  * @return код ошибки (int)
  */
-int s21_create_sub_matrix(matrix_t* source, int row_del, int column_del, int size, matrix_t* result) {
-    int err_code = 0;
-    err_code = s21_create_matrix(size, size, result);
-    // printf("size: %d\n", size);
-    // printf("after create submatrix check: %d\n", err_code);
+int s21_create_sub_matrix(const matrix_t* source, int row_del, int column_del, int size, matrix_t* result) {
+    int err_code = s21_create_matrix(size, size, result);
     if (err_code == OK) {
         for (int row_src = 0, row_res = 0;  row_src <= size; row_src++){
             if (row_src == row_del) continue;
             for (int column_src = 0, column_res = 0; column_src <= size; column_src++){
                 if (column_src == column_del) continue;
-                // printf("%d -- %d -- %d -- %d\n", row_src, row_res, column_src, column_res);
                 result->matrix[row_res][column_res] = source->matrix[row_src][column_src];
                 column_res++;
             }
             row_res++;
         }
     }
-    // printf("after fill submatrix check: %d\n", err_code);
-    // s21_print_matrix(result); 
-    // printf("\n");
     return err_code;
 }
 
@@ -159,7 +132,7 @@ int s21_create_sub_matrix(matrix_t* source, int row_del, int column_del, int siz
  * @param start значение первого элемента матрицы (double)
  * @param step шаг арифметической последовательности (double)
  */
-void s21_initialize_matrix(matrix_t *source, double start, double step) {
+void s21_initialize_matrix(const matrix_t *source, double start, double step) {
     if (!s21_is_valid_matrix_full(source)) {
         double current_value = start;
         for (int i = 0; i < source->rows; i++) {
@@ -176,28 +149,13 @@ void s21_initialize_matrix(matrix_t *source, double start, double step) {
  *
  * @param source исходная матрица
  */
-void s21_print_matrix(matrix_t *source) {
+void s21_print_matrix(const matrix_t *source) {
     if (!s21_is_valid_matrix_full(source)) {
         for (int i = 0; i < source->rows; i++) {
             for (int j = 0; j < source->columns; j++) printf("%f\t", source->matrix[i][j]);
             printf("\n");
         }
     }
-}
-
-/**
- * @brief проверяет валидность матрицы. 
- * //проверяемые признаки: указатель на структуру, размеры матрицы
- * @param rows количество строк (int)
- * @param columns количество столбцов (int)
- * @param source структура с матрицей (matrix_t)
- * @return результат проверки (int)
- * @retval 0 - OK.
- * @retval 1 - INCORRECT_MATRIX.
- * @retval 2 - CALCULATION_ERROR.
- */
-int s21_is_valid_matrix_mini(int rows, int columns, matrix_t *result){
-    return (!result || rows < 1 || columns < 1) ? INCORRECT_MATRIX : OK;
 }
 
 /**
@@ -209,14 +167,12 @@ int s21_is_valid_matrix_mini(int rows, int columns, matrix_t *result){
  * @retval 1 - INCORRECT_MATRIX.
  * @retval 2 - CALCULATION_ERROR.
  */
-int s21_is_valid_matrix_midi(matrix_t * source){
+int s21_is_valid_matrix_midi(const matrix_t * source){
     int err_code = (!source || source->rows < 1 || source->columns < 1) ? INCORRECT_MATRIX : OK;
-    // printf("check_2_1 is complete: %d\n", err_code);
     if (err_code == OK) {
         if (!source->matrix) err_code = INCORRECT_MATRIX;
         else for (int i = 0; err_code == OK && i < source->rows; i++) if (!source->matrix[i]) err_code = INCORRECT_MATRIX;
     }
-    // printf("check_2_2 is complete: %d\n", err_code);
     return err_code;
 }    
 
@@ -229,11 +185,8 @@ int s21_is_valid_matrix_midi(matrix_t * source){
  * @retval 1 - INCORRECT_MATRIX.
  * @retval 2 - CALCULATION_ERROR.
  */
-int s21_is_valid_matrix_full(matrix_t * source){
-    int err_code = s21_is_valid_matrix_mini(source->rows, source->columns, source);
-    // printf("check_3_1 is complete: %d\n", err_code);
-    if (err_code == OK) err_code = s21_is_valid_matrix_midi(source);
-    // printf("check_3_2 is complete: %d\n", err_code);
+int s21_is_valid_matrix_full(const matrix_t * source){
+    int err_code = s21_is_valid_matrix_midi(source);
     if (err_code == OK) {
         for (int i = 0; err_code == OK && i < source->rows; i++){
             for (int j = 0; err_code == OK && j < source->columns; j++){
@@ -241,7 +194,6 @@ int s21_is_valid_matrix_full(matrix_t * source){
             }
         }
     }
-    // printf("check_3_3 is complete: %d\n", err_code);
     return err_code;
 }
 
@@ -256,4 +208,28 @@ int s21_is_valid_matrix_full(matrix_t * source){
  */
 int s21_is_valid_element(double val){
     return (isnan(val) || isinf(val)) ? CALCULATION_ERROR : OK;
+}
+
+/**
+ * @brief проверяет валидность указателя на результат     
+ * проверяемые признаки: не является NULL
+ * @param source проверяемый указатель (source)
+ * @return результат проверки (int)
+ * @retval 0 - OK.
+ * @retval 1 - INCORRECT_MATRIX.
+ * @retval 2 - CALCULATION_ERROR.
+ */
+int s21_is_valid_result_ptr(const matrix_t * source){
+    return (!source) ? INCORRECT_MATRIX : OK;
+}
+
+/**
+ * @brief корректирует индекс (концепция бесконечной склейки)     
+ * 
+ * @param index исходный индекс (int)
+ * @param size размер матрицы (int)
+ * @return итоговый индекс (int)
+ */
+int s21_correct_index(int index, int size){
+    return (index + size) % size;
 }

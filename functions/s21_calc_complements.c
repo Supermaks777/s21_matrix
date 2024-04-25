@@ -11,27 +11,17 @@
  * @retval 2 - CALCULATION_ERROR.
  */
 int s21_calc_complements(matrix_t *A, matrix_t *result) {
-    int err_code = OK;
-    int element_sign;
-    double element_value;
-    if (!s21_is_valid_matrix(A)) err_code = INCORRECT_MATRIX;
-    else if (!result) err_code = INCORRECT_MATRIX;
-    else if (A->rows != A->columns) err_code = CALCULATION_ERROR;
-    // printf("start check: %d\n", err_code);
+    double value;
+    int err_code = s21_is_valid_result_ptr(result);
+    if (err_code == OK) err_code = s21_is_valid_matrix_full(A);
+    if (err_code == OK) err_code = s21_squar_size(A);
     if (err_code == OK) err_code = s21_create_matrix(A->rows,A->columns, result);
-    // printf("after create check: %d\n", err_code);
-    if (err_code == OK && A->rows == 2) {
-        result->matrix[0][0] = A->matrix[1][1];
-        result->matrix[0][1] = -A->matrix[1][0];
-        result->matrix[1][0] = -A->matrix[0][1];
-        result->matrix[1][1] = A->matrix[0][0];
-    } else if (err_code == OK){
-        for (int i = 0; i < A->rows && err_code == OK; i++){
+    if (err_code == OK){    
+        if (A->rows = 1) result->matrix[0][0] = A->matrix[0][0];
+        else for (int i = 0; i < A->rows && err_code == OK; i++){
             for (int j = 0; j < A->columns && err_code == OK; j++){
-                // printf("cicle check: %d - %d - %d\n", i, j, err_code);
-                element_value = s21_get_minor(A, i, j, &err_code);
-                element_sign = pow(-1, i + j);
-                result->matrix[i][j] = element_sign * element_value;
+                err_code = s21_get_minor(A, i, j, &value);
+                if (err_code == OK) result->matrix[i][j] = value * pow(-1, i + j);
             }
         }
     }

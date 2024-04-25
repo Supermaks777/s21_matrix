@@ -36,23 +36,19 @@ int s21_inverse_matrix(matrix_t *A, matrix_t *result);
 
 
 //helper
-int s21_eq_size (matrix_t A, matrix_t B);
-int s21_abs(double val);
-int s21_eq_element (double val_1, double val_2);
-int s21_eq_content (matrix_t A, matrix_t B);
-// int s21_is_valid_matrix(matrix_t * source);
-int s21_is_valid_element(double val);
-int s21_compatibility_size (matrix_t A, matrix_t B);
-long double s21_determinant_2x2(matrix_t* A);
-double s21_get_minor(matrix_t* source, int row, int column, int * err_code);
-int s21_create_sub_matrix(matrix_t* source, int row_del, int column_del, int size, matrix_t* result);
-void s21_initialize_matrix(matrix_t *source, double start, double step);
-void s21_print_matrix(matrix_t *source);
-int get_valid_index(int index, int size);
-int s21_is_valid_for_det(matrix_t * source);
-int s21_is_valid_matrix_mini(int rows, int columns, matrix_t *result);
-int s21_is_valid_matrix_midi(matrix_t * source);
-int s21_is_valid_matrix_full(matrix_t * source);
+int s21_eq_size (const matrix_t * A, const matrix_t * B);
 int s21_squar_size (const matrix_t * source);
+int s21_eq_element (double val_1, double val_2);
+int s21_eq_content (const matrix_t *A, const matrix_t *B);
+int s21_compatibility_size (const matrix_t * A, const matrix_t * B);
+int s21_get_minor(const matrix_t* source, int row, int column, double * result);
+int s21_create_sub_matrix(const matrix_t* source, int row_del, int column_del, int size, matrix_t* result);
+void s21_initialize_matrix(const matrix_t *source, double start, double step);
+void s21_print_matrix(const matrix_t *source);
+int s21_is_valid_matrix_midi(const matrix_t * source);
+int s21_is_valid_matrix_full(const matrix_t * source);
+int s21_is_valid_element(double val);
+int s21_is_valid_result_ptr(const matrix_t * source);
+int s21_correct_index(int index, int size);
 
 #endif

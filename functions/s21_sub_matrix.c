@@ -12,16 +12,18 @@
  */
 int s21_sub_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
     double sub = 0.0;
-    int err_code = s21_is_valid_matrix_full(A);
+    int err_code = s21_is_valid_result_ptr(result);
+    if (err_code == OK) err_code = s21_is_valid_matrix_full(A);
     if (err_code == OK) err_code = s21_is_valid_matrix_full(B);
-    if (err_code == OK) err_code = s21_eq_size(*A, *B);
+    if (err_code == OK) err_code = s21_eq_size(A, B);
     if (err_code == OK) err_code = s21_create_matrix(A->rows,A->columns, result);
-    
-    for (int i = 0; err_code == OK && i < A->rows; i++){
-        for (int j = 0;  err_code == OK && j < A->columns; j++){
-            sub = A->matrix[i][j] - B->matrix[i][j];
-            err_code = s21_is_valid_element(sub);
-            if (err_code == 0) result->matrix[i][j] = sub;
+    if (err_code == OK){
+        for (int i = 0; err_code == OK && i < A->rows; i++){
+            for (int j = 0;  err_code == OK && j < A->columns; j++){
+                sub = A->matrix[i][j] - B->matrix[i][j];
+                err_code = s21_is_valid_element(sub);
+                if (err_code == 0) result->matrix[i][j] = sub;
+            }
         }
     }
     return err_code;
