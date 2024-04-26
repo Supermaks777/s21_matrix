@@ -93,6 +93,8 @@ int s21_get_minor(const matrix_t* source, int row, int column, double * result) 
     matrix_t sub_matrix = {0};
     int err_code = s21_create_sub_matrix(source, row, column, source->rows - 1, &sub_matrix);
     if (err_code == OK) err_code = s21_determinant(&sub_matrix, &determinant);
+    // s21_print_matrix(&sub_matrix);
+    // printf("\ndet: %f\n\n", determinant);
     s21_remove_matrix(&sub_matrix);
     if (err_code == OK) err_code = s21_is_valid_element(determinant);
     if (err_code == OK) *result = determinant;
@@ -122,6 +124,7 @@ int s21_create_sub_matrix(const matrix_t* source, int row_del, int column_del, i
             row_res++;
         }
     }
+    // s21_print_matrix(result);
     return err_code;
 }
 
@@ -232,4 +235,15 @@ int s21_is_valid_result_ptr(const matrix_t * source){
  */
 int s21_correct_index(int index, int size){
     return (index + size) % size;
+}
+
+/**
+ * @brief находит определитель матрицы 2 порядка     
+ * 
+ * @param source исходная матрица (matrix_t)
+ * @param size размер матрицы (int)
+ * @return итоговый индекс (int)
+ */
+int s21_determinant_2x2(const matrix_t source){
+    return source.matrix[0][0]*source.matrix[1][1] - source.matrix[0][1]*source.matrix[1][0];
 }

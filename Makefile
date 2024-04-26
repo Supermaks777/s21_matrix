@@ -2,19 +2,7 @@ LIB_SRC_DIR			= ./lib
 FLAGS_CC 			= -Werror -Wall -Wextra -std=c11
 FLAGS_CC_DEV 		= -Wall -Wextra -std=c11 -Wno-stringop-overread
 FUNC_FILES 			= ./functions/*.c
-# FUNC_FILES 			:= \
-# 		./functions/s21_create_matrix.c \
-# 		./functions/s21_remove_matrix.c \
-# 		./functions/s21_sum_matrix.c \
-# 		./functions/s21_eq_matrix.c \
-# 		./functions/s21_mult_number.c \
-# 		./functions/s21_mult_matrix.c \
-# 		./functions/s21_helper.c 
-
 TEST_FILES			= ./tests/s21_test.h ./tests/s21_*.c
-# TEST_FILES			:= \
-# 		./tests/s21_test_mult_matrix.c \
-# 		./tests/s21_test_main.c 
 FLAGS_GL			= --coverage
 FLAGS_GCOV			= -fprofile-arcs -ftest-coverage
 

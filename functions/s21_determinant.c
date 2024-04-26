@@ -17,6 +17,7 @@ int s21_determinant(matrix_t *A, double *result) {
     if (err_code == OK) err_code = s21_squar_size(A);
     if (err_code == OK){
         if (A->rows == 1) res = A->matrix[0][0];
+        else if (A->rows == 2) res = A->matrix[0][0] * A->matrix[1][1] - A->matrix[1][0] * A->matrix[0][1];
         else for (int i = 0; err_code == OK && i < A->rows; i++){
             term_1 = 1.0;
             term_2 = 1.0;
