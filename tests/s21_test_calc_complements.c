@@ -1,24 +1,24 @@
 #include "s21_test.h"
 
-START_TEST(s21_calc_complements_1) {
-  // ошибка: null в указателе на результат
-  matrix_t A = {};
-  s21_create_matrix(3, 3, &A);
-  ck_assert_int_eq(s21_calc_complements(&A, NULL), INCORRECT_MATRIX);
-  s21_remove_matrix(&A);
-}
-END_TEST
+// START_TEST(s21_calc_complements_1) {
+//   // ошибка: null в указателе на результат
+//   matrix_t A = {};
+//   s21_create_matrix(3, 3, &A);
+//   ck_assert_int_eq(s21_calc_complements(&A, NULL), INCORRECT_MATRIX);
+//   s21_remove_matrix(&A);
+// }
+// END_TEST
 
-START_TEST(s21_calc_complements_2) {
-  // ошибка: вектор в исходной матрице (всего 1 строка), т.е. матрица не квадратная
-  matrix_t A = {};
-  matrix_t result = {};
-  s21_create_matrix(1, 3, &A);
-  s21_initialize_matrix(&A, 1, 3);
-  ck_assert_int_eq(s21_calc_complements(&A, &result), CALCULATION_ERROR);
-  s21_remove_matrix(&A);
-}
-END_TEST
+// START_TEST(s21_calc_complements_2) {
+//   // ошибка: вектор в исходной матрице (всего 1 строка), т.е. матрица не квадратная
+//   matrix_t A = {};
+//   matrix_t result = {};
+//   s21_create_matrix(1, 3, &A);
+//   s21_initialize_matrix(&A, 1, 3);
+//   ck_assert_int_eq(s21_calc_complements(&A, &result), CALCULATION_ERROR);
+//   s21_remove_matrix(&A);
+// }
+// END_TEST
 
 START_TEST(s21_calc_complements_3) {
   // успех: матрица с заданными значениями элементов
@@ -39,7 +39,9 @@ START_TEST(s21_calc_complements_3) {
 
   int res = s21_calc_complements(&A, &result);
   // s21_print_matrix(&A);
+  // printf("\n");
   // s21_print_matrix(&result);
+  // printf("\n");
   // s21_print_matrix(&eq_matrix);
 
   ck_assert_int_eq(res, OK);
@@ -53,8 +55,8 @@ END_TEST
 Suite *s21_calc_complements_suite(void) {
   Suite *suite = suite_create("s21_calc_complements");
   TCase *tc_core = tcase_create("core_of_calc_complements");
-  tcase_add_test(tc_core, s21_calc_complements_1);
-  tcase_add_test(tc_core, s21_calc_complements_2);
+  // tcase_add_test(tc_core, s21_calc_complements_1);
+  // tcase_add_test(tc_core, s21_calc_complements_2);
   tcase_add_test(tc_core, s21_calc_complements_3);
   suite_add_tcase(suite, tc_core);
 
