@@ -15,6 +15,7 @@ int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
   if (err_code == OK) err_code = s21_is_valid_matrix_full(A);
   if (err_code == OK) err_code = s21_squar_size(A);
   if (err_code == OK) err_code = s21_determinant(A, &determinant);
+  if (err_code == OK && determinant == 0) err_code = CALCULATION_ERROR;
   if (err_code == OK) err_code = s21_create_matrix(A->rows, A->columns, result);
   if (err_code == OK) {
     if (A->rows == 1)
