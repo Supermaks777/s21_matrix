@@ -2,14 +2,17 @@
 
 START_TEST(s21_sum_matrix_1) {
   // ошибка: некорректная структура матрицы
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t B = {};
   ck_assert_int_eq(s21_sum_matrix(&A, &B, NULL), INCORRECT_MATRIX);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_sum_matrix_2) {
   // ошибка: разная размерность матриц
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t B = {};
   matrix_t result = {};
@@ -18,11 +21,13 @@ START_TEST(s21_sum_matrix_2) {
   ck_assert_int_eq(s21_sum_matrix(&A, &B, &result), CALCULATION_ERROR);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_sum_matrix_3) {
   // ошибка: наличие бесконечности среди элементов одной из матриц
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t B = {};
   matrix_t result = {};
@@ -35,11 +40,13 @@ START_TEST(s21_sum_matrix_3) {
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
   s21_remove_matrix(&result);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_sum_matrix_4) {
   // успех: инициализированные матрицы
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t B = {};
   matrix_t result = {};
@@ -56,11 +63,13 @@ START_TEST(s21_sum_matrix_4) {
   s21_remove_matrix(&B);
   s21_remove_matrix(&result);
   s21_remove_matrix(&eq_matrix);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_sum_matrix_5) {
   // успех: неинициализированные матрицы
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t B = {};
   matrix_t result = {};
@@ -74,11 +83,13 @@ START_TEST(s21_sum_matrix_5) {
   s21_remove_matrix(&B);
   s21_remove_matrix(&result);
   s21_remove_matrix(&eq_matrix);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_sum_matrix_6) {
   // успех: произвольно заданные значения
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t B = {};
   matrix_t result = {};
@@ -104,6 +115,7 @@ START_TEST(s21_sum_matrix_6) {
   s21_remove_matrix(&B);
   s21_remove_matrix(&result);
   s21_remove_matrix(&eq_matrix);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 

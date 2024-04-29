@@ -2,6 +2,7 @@
 
 START_TEST(s21_eq_matrix_1) {
   // успех: корректные инициализированные матрицы
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t B = {};
   s21_create_matrix(5, 5, &A);
@@ -11,11 +12,13 @@ START_TEST(s21_eq_matrix_1) {
   ck_assert_int_eq(s21_eq_matrix(&A, &B), SUCCESS);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_eq_matrix_2) {
   // успех: неинициализированные матрицы
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t B = {};
   s21_create_matrix(5, 5, &A);
@@ -23,11 +26,13 @@ START_TEST(s21_eq_matrix_2) {
   ck_assert_int_eq(s21_eq_matrix(&A, &B), SUCCESS);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_eq_matrix_3) {
   // успех: отклонение значения элемента меньше порогового значения
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t B = {};
   s21_create_matrix(5, 5, &A);
@@ -37,11 +42,13 @@ START_TEST(s21_eq_matrix_3) {
   ck_assert_int_eq(s21_eq_matrix(&A, &B), SUCCESS);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_eq_matrix_4) {
   // ошибка: разная размерность
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t B = {};
   s21_create_matrix(5, 5, &A);
@@ -49,21 +56,25 @@ START_TEST(s21_eq_matrix_4) {
   ck_assert_int_eq(s21_eq_matrix(&A, &B), FAILURE);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_eq_matrix_5) {
   // ошибка: некорректная структура матрицы
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t B = {};
   s21_create_matrix(5, 5, &A);
   ck_assert_int_eq(s21_eq_matrix(&A, &B), FAILURE);
   s21_remove_matrix(&A);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_eq_matrix_6) {
   // ошибка: разные значения
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t B = {};
   s21_create_matrix(5, 5, &A);
@@ -73,6 +84,7 @@ START_TEST(s21_eq_matrix_6) {
   ck_assert_int_eq(s21_eq_matrix(&A, &B), FAILURE);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
