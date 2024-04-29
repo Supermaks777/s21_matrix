@@ -29,12 +29,8 @@ int s21_create_matrix(int rows, int columns, matrix_t *result) {
       if (!result->matrix[i]) err_code = INCORRECT_MATRIX;
     }
   }
-  //очищение памяти на случай, если ошибка случилась в процессе выделения памяти
-  //на строки (т.е. какие то строки уже были выделены)
-  if (err_code != OK && !!result && rows > 0 && columns > 0) {
-    for (int i = 0; i < rows; i++)
-      if (!!result->matrix[i]) free(result->matrix[i]);
-  }
 
+  if (err_code != OK && !!result && rows > 0 && columns > 0) s21_remove_matrix(result);
+  
   return err_code;
 }
