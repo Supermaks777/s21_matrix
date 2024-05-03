@@ -46,8 +46,15 @@ gcov_report: clean build_o_for_test build_lib test
 	lcov -o tests.info -c -d .   
 	genhtml -o report tests.info
 	open report/index.html
-	make clean_except	_report
+	make clean_except_report
 
+gcov_report_M1:
+	gcc $(FLAGS_CC_DEV) $(FLAGS_GL) $(FLAGS_GCOV) $(FUNC_FILES) $(TEST_FILES) -o s21_matrix_test $(FLAGS_CHECK) 
+	./s21_matrix_test
+	lcov -o tests.info -c -d .   
+	genhtml -o report tests.info
+	open report/index.html
+	make clean_except_report
 
 clean:
 	rm -rf *.o
