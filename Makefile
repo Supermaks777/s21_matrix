@@ -15,10 +15,12 @@ endif
 all: build_o s21_matrix.a
 
 clang:
-	clang-format --style=Google -n functions/*.{c,h} tests/*.{c,h} *.{c,h}
+	cp ../materials/linters/.clang-format .
+	clang-format --style=Google -n functions/*.c tests/*.c tests/*.h *.h
 
 clang_replace:
-	clang-format --style=Google -i functions/*.{c,h} tests/*.{c,h} *.{c,h}
+	cp ../materials/linters/.clang-format .
+	clang-format --style=Google -i functions/*.c tests/*.c tests/*.h *.h
 
 build_o:
 	gcc $(FLAGS_CC) -c $(FUNC_FILES) 
@@ -46,7 +48,7 @@ gcov_report: clean build_o_for_test build_lib test
 	lcov -o tests.info -c -d .   
 	genhtml -o report tests.info
 	open report/index.html
-	make clean_except	_report
+	make clean_except_report
 
 
 clean:
@@ -80,20 +82,6 @@ rebuild:
 	make
 
 
-dev_test: $(TEST_FILES) s21_matrix.a $(FUNC_FILES)  
-	rm -rf *.o s21_matrix_test.gcda *.gcno *.gcov *.info
-	gcc -DDEBUG $(FLAGS_CC_DEV) $(FLAGS_GL) $(FLAGS_GCOV) $^ -o dev_test $(FLAGS_CHECK)
-	./dev_test
-
-
-win:
-	gcc main.c ./functions/s21_*.c -o test1_main
-	./test1_main.exe
-
 mac:
 	gcc main.c ./functions/s21_*.c -o test2_main
 	./test2_main
-
-testy:
-	gcc s21_*.c ./tests/unit_tests.c -o my_testy
-	./my_testy

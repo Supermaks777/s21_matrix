@@ -2,31 +2,32 @@
 
 START_TEST(s21_calc_complements_1) {
   // ошибка: null в указателе на результат
- memory_counter = 0;
+  // memory_counter = 0;
   matrix_t A = {};
   s21_create_matrix(3, 3, &A);
   ck_assert_int_eq(s21_calc_complements(&A, NULL), INCORRECT_MATRIX);
   s21_remove_matrix(&A);
-  printf("memory_counter: %d\n", memory_counter);
+  // printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_calc_complements_2) {
-  // ошибка: вектор в исходной матрице (всего 1 строка), т.е. матрица не квадратная
- memory_counter = 0;
+  // ошибка: вектор в исходной матрице (всего 1 строка), т.е. матрица не
+  // квадратная
+  // memory_counter = 0;
   matrix_t A = {};
   matrix_t result = {};
   s21_create_matrix(1, 3, &A);
   s21_initialize_matrix(&A, 1, 3);
   ck_assert_int_eq(s21_calc_complements(&A, &result), CALCULATION_ERROR);
   s21_remove_matrix(&A);
-  printf("memory_counter: %d\n", memory_counter);
+  // printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_calc_complements_3) {
   // успех: матрица с заданными значениями элементов
- memory_counter = 0;
+  // memory_counter = 0;
   matrix_t A = {};
   matrix_t result = {};
   matrix_t eq_matrix = {};
@@ -43,7 +44,7 @@ START_TEST(s21_calc_complements_3) {
   eq_matrix.matrix[2][2] = 4;
 
   int res = s21_calc_complements(&A, &result);
-  
+
   // s21_print_matrix(&A);
   // printf("\n");
   // s21_print_matrix(&result);
@@ -55,7 +56,7 @@ START_TEST(s21_calc_complements_3) {
   s21_remove_matrix(&A);
   s21_remove_matrix(&result);
   s21_remove_matrix(&eq_matrix);
-  printf("memory_counter: %d\n", memory_counter);
+  // printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 

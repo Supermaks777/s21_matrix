@@ -16,13 +16,11 @@ int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
   if (err_code == OK) err_code = s21_squar_size(A);
   if (err_code == OK) err_code = s21_determinant(A, &determinant);
   if (err_code == OK && determinant == 0) err_code = CALCULATION_ERROR;
-  // if (err_code == OK) err_code = s21_create_matrix(A->rows, A->columns, result);
   if (err_code == OK) {
     if (A->rows == 1) {
       err_code = s21_create_matrix(1, 1, result);
       if (err_code == OK) result->matrix[0][0] = 1 / A->matrix[0][0];
-    }
-    else {
+    } else {
       matrix_t complements = {0};
       matrix_t transposed_complements = {0};
       err_code = s21_calc_complements(A, &complements);
