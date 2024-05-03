@@ -2,17 +2,20 @@
 
 START_TEST(s21_mult_number_1) {
   // ошибка: null в указателе на результат
+ memory_counter = 0;
   matrix_t A = {};
   double number = 3.14;
   s21_create_matrix(3, 3, &A);
   s21_initialize_matrix(&A, 1, 1);
   ck_assert_int_eq(s21_mult_number(&A, number, NULL), INCORRECT_MATRIX);
   s21_remove_matrix(&A);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_mult_number_2) {
   // ошибка: умножение на бесконечное число
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t result = {};
   double number = INFINITY;
@@ -20,11 +23,13 @@ START_TEST(s21_mult_number_2) {
   s21_initialize_matrix(&A, 1, 1);
   ck_assert_int_eq(s21_mult_number(&A, number, &result), CALCULATION_ERROR);
   s21_remove_matrix(&A);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_mult_number_3) {
   // ошибка: бесконечность среди элементов матрицы
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t result = {};
   double number = 3;
@@ -34,11 +39,13 @@ START_TEST(s21_mult_number_3) {
   ck_assert_int_eq(s21_mult_number(&A, number, &result), CALCULATION_ERROR);
   s21_remove_matrix(&A);
   s21_remove_matrix(&result);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_mult_number_4) {
   // успех: неинициализированная матрица
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t result = {};
   matrix_t eq_matrix = {};
@@ -54,11 +61,13 @@ START_TEST(s21_mult_number_4) {
   s21_remove_matrix(&A);
   s21_remove_matrix(&result);
   s21_remove_matrix(&eq_matrix);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_mult_number_5) {
   // успех: инициализированная матрица
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t result = {};
   matrix_t eq_matrix = {};
@@ -72,11 +81,13 @@ START_TEST(s21_mult_number_5) {
   s21_remove_matrix(&A);
   s21_remove_matrix(&result);
   s21_remove_matrix(&eq_matrix);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 
 START_TEST(s21_mult_number_6) {
   // успех с заданными значениями
+ memory_counter = 0;
   matrix_t A = {};
   matrix_t result = {};
   matrix_t eq_matrix = {};
@@ -97,6 +108,7 @@ START_TEST(s21_mult_number_6) {
   s21_remove_matrix(&A);
   s21_remove_matrix(&result);
   s21_remove_matrix(&eq_matrix);
+  printf("memory_counter: %d\n", memory_counter);
 }
 END_TEST
 

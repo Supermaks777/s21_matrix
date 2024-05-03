@@ -1,5 +1,7 @@
 #include "../s21_matrix.h"
 
+int memory_counter;
+
 /**
  * @brief создает матрицу заданного размера (вариант rows+1 массивами)
  * валидация данных: result на существование, размеры матрицы на корректность,
@@ -20,17 +22,15 @@ int s21_create_matrix(int rows, int columns, matrix_t *result) {
     result->rows = rows;
     result->columns = columns;
     result->matrix = calloc(rows, sizeof(double *));
+    memory_counter += 1;
     for (int i = 0; i < rows && err_code == OK; i++) {
       result->matrix[i] = calloc(columns, sizeof(double));
+      memory_counter += 1;
       if (!result->matrix[i]) err_code = INCORRECT_MATRIX;
     }
   }
-  //очищение памяти на случай, если ошибка случилась в процессе выделения памяти
-  //на строки (т.е. какие то строки уже были выделены)
-  if (err_code != OK && !!result && rows > 0 && columns > 0) {
-    for (int i = 0; i < rows; i++)
-      if (!!result->matrix[i]) free(result->matrix[i]);
-  }
 
+  if (err_code != OK && !!result && rows > 0 && columns > 0) s21_remove_matrix(result);
+  
   return err_code;
 }

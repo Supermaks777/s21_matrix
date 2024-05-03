@@ -16,6 +16,8 @@ typedef struct matrix_struct {
   int columns;
 } matrix_t;
 
+extern int memory_counter;
+
 enum ERROR_CODES { OK, INCORRECT_MATRIX, CALCULATION_ERROR };
 
 
