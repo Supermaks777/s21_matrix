@@ -92,3 +92,14 @@ rebuild:
 mac:
 	gcc main.c ./functions/s21_*.c -o test2_main
 	./test2_main
+
+test_another: tests/unit_test.c s21_matrix.a
+	rm -rf *.o s21_matrix_test.gcda
+	gcc $(FLAGS_CC_DEV) $(FLAGS_GL) $(FLAGS_GCOV) $^ -o s21_matrix_test $(FLAGS_CHECK) 
+	./s21_matrix_test
+
+
+test_another2: tests/unit_tests.c s21_matrix.a
+	rm -rf *.o s21_matrix_test.gcda
+	gcc $(FLAGS_CC_DEV) $(FLAGS_GL) $(FLAGS_GCOV) $^ -o s21_matrix_test $(FLAGS_CHECK) 
+	./s21_matrix_test

@@ -1,0 +1,5 @@
+report/
+*.gcda
+*.gcno
+*.log
+*.a

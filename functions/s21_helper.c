@@ -160,19 +160,32 @@ void s21_initialize_matrix(matrix_t *source, double start, double step) {
  * @retval 1 - INCORRECT_MATRIX.
  * @retval 2 - CALCULATION_ERROR.
  */
-int s21_is_valid_matrix_midi(const matrix_t *source) {
+int s21_is_valid_matrix_mini(const matrix_t *source) {
   int err_code = (!source) ? INCORRECT_MATRIX : OK;
   if (err_code == OK) err_code = (!source->rows) ? INCORRECT_MATRIX : OK;
-  if (err_code == OK) err_code = (!source->columns) ? INCORRECT_MATRIX : OK;
-  if (err_code == OK)
-    err_code = (source->rows != source->rows) ? INCORRECT_MATRIX : OK;
-  if (err_code == OK)
-    err_code = (source->columns != source->columns) ? INCORRECT_MATRIX : OK;
+  if (err_code == OK) err_code = (source->rows != source->rows) ? INCORRECT_MATRIX : OK;
   if (err_code == OK) err_code = (source->rows < 1) ? INCORRECT_MATRIX : OK;
-  if (err_code == OK) err_code = (source->columns < 1) ? INCORRECT_MATRIX : OK;
   if (err_code == OK) err_code = (!source->matrix) ? INCORRECT_MATRIX : OK;
   for (int i = 0; err_code == OK && i < source->rows; i++)
     err_code = (!source->matrix[i]) ? INCORRECT_MATRIX : OK;
+  return err_code;
+}
+
+/**
+ * @brief проверяет валидность матрицы.
+ * проверяемые признаки: указатель на структуру, размеры матрицы, указатель на
+ * матрицу, указатели строк
+ * @param source структура с матрицей (matrix_t)
+ * @return результат проверки (int)
+ * @retval 0 - OK.
+ * @retval 1 - INCORRECT_MATRIX.
+ * @retval 2 - CALCULATION_ERROR.
+ */
+int s21_is_valid_matrix_midi(const matrix_t *source) {
+  int err_code = s21_is_valid_matrix_mini(source);
+  if (err_code == OK) err_code = (!source->columns) ? INCORRECT_MATRIX : OK;
+  if (err_code == OK) err_code = (source->columns != source->columns) ? INCORRECT_MATRIX : OK;
+  if (err_code == OK) err_code = (source->columns < 1) ? INCORRECT_MATRIX : OK;
   return err_code;
 }
 
@@ -256,6 +269,7 @@ int s21_copy_matrix(const matrix_t *source, matrix_t *result) {
 int s21_gauss_elimination(const matrix_t *source) {
   for (int k = 0; k < source->rows - 1; k++) {
     for (int i = k + 1; i < source->rows; i++) {
+      // double factor = source->matrix[k][k] == 0.0 ? 0.0 : source->matrix[i][k] / source->matrix[k][k];
       double factor = source->matrix[i][k] / source->matrix[k][k];
       for (int j = k; j < source->rows; j++) {
         source->matrix[i][j] -= factor * source->matrix[k][j];
@@ -273,25 +287,26 @@ int s21_gauss_elimination(const matrix_t *source) {
  */
 double s21_main_diagonal_multiple(const matrix_t *source) {
   double result = 1.0;
-  for (int i = 0; i < source->rows; i++) result *= source->matrix[i][i];
+  for (int i = 0; i < source->rows && result != 0.0; i++) if (source->matrix[i][i] == 0.0) result = 0.0;
+  for (int i = 0; i < source->rows && result != 0.0; i++) result *= source->matrix[i][i];
   return result;
 }
 
 //////////////////функции для отладки///////////////////////////
-// /**
-//  * @brief вывод на экран матрицы
-//  *
-//  * @param source исходная матрица
-//  */
-// void s21_print_matrix(const matrix_t *source) {
-//   if (!s21_is_valid_matrix_full(source)) {
-//     for (int i = 0; i < source->rows; i++) {
-//       for (int j = 0; j < source->columns; j++)
-//         printf("%f\t", source->matrix[i][j]);
-//       printf("\n");
-//     }
-//   }
-// }
+/**
+ * @brief вывод на экран матрицы
+ *
+ * @param source исходная матрица
+ */
+void s21_print_matrix(const matrix_t *source) {
+  if (!s21_is_valid_matrix_midi(source)) {
+    for (int i = 0; i < source->rows; i++) {
+      for (int j = 0; j < source->columns; j++)
+        printf("%-10f\t", source->matrix[i][j]);
+      printf("\n");
+    }
+  }
+}
 
 // /**
 //  * @brief корректирует индекс (концепция бесконечной склейки)

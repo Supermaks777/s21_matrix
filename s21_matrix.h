@@ -42,6 +42,7 @@ int s21_create_sub_matrix(const matrix_t *source, int row_del, int column_del,
                           int size, matrix_t *result);
 void s21_initialize_matrix(matrix_t *source, double start, double step);
 void s21_print_matrix(const matrix_t *source);
+int s21_is_valid_matrix_mini(const matrix_t *source);
 int s21_is_valid_matrix_midi(const matrix_t *source);
 int s21_is_valid_matrix_full(const matrix_t *source);
 int s21_is_valid_element(double val);
