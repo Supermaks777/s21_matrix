@@ -11,6 +11,9 @@
  * @retval 2 - CALCULATION_ERROR.
  */
 int s21_eq_size(const matrix_t *A, const matrix_t *B) {
+  printf("s21_eq_size.check_1: %d\n", A->rows != B->rows);
+  printf("s21_eq_size.check_2: %d\n", A->columns != B->columns);
+  printf("s21_eq_size.check_3: %d\n", A->rows != B->rows || A->columns != B->columns);
   return (A->rows != B->rows || A->columns != B->columns) ? CALCULATION_ERROR
                                                           : OK;
 }
@@ -53,11 +56,14 @@ int s21_eq_element(double val_1, double val_2) {
 int s21_eq_content(const matrix_t *A, const matrix_t *B) {
   int result = SUCCESS;
   if (s21_eq_size(A, B)) result = FAILURE;
+  printf("s21_eq_content.result_before_cmp: %d\n", result);
   for (int i = 0; i < A->rows && result == SUCCESS; i++) {
     for (int j = 0; j < A->columns && result == SUCCESS; j++) {
       result = s21_eq_element(A->matrix[i][j], B->matrix[i][j]);
+      printf("s21_eq_content.cpr: %f --- %f\n", A->matrix[i][j], B->matrix[i][j]);
     }
   }
+  printf("s21_eq_content.result_after_cmp: %d\n", result);
   return result;
 }
 
@@ -163,7 +169,8 @@ void s21_initialize_matrix(matrix_t *source, double start, double step) {
 int s21_is_valid_matrix_mini(const matrix_t *source) {
   int err_code = (!source) ? INCORRECT_MATRIX : OK;
   if (err_code == OK) err_code = (!source->rows) ? INCORRECT_MATRIX : OK;
-  if (err_code == OK) err_code = (source->rows != source->rows) ? INCORRECT_MATRIX : OK;
+  if (err_code == OK)
+    err_code = (source->rows != source->rows) ? INCORRECT_MATRIX : OK;
   if (err_code == OK) err_code = (source->rows < 1) ? INCORRECT_MATRIX : OK;
   if (err_code == OK) err_code = (!source->matrix) ? INCORRECT_MATRIX : OK;
   for (int i = 0; err_code == OK && i < source->rows; i++)
@@ -184,7 +191,8 @@ int s21_is_valid_matrix_mini(const matrix_t *source) {
 int s21_is_valid_matrix_midi(const matrix_t *source) {
   int err_code = s21_is_valid_matrix_mini(source);
   if (err_code == OK) err_code = (!source->columns) ? INCORRECT_MATRIX : OK;
-  if (err_code == OK) err_code = (source->columns != source->columns) ? INCORRECT_MATRIX : OK;
+  if (err_code == OK)
+    err_code = (source->columns != source->columns) ? INCORRECT_MATRIX : OK;
   if (err_code == OK) err_code = (source->columns < 1) ? INCORRECT_MATRIX : OK;
   return err_code;
 }
@@ -269,7 +277,8 @@ int s21_copy_matrix(const matrix_t *source, matrix_t *result) {
 int s21_gauss_elimination(const matrix_t *source) {
   for (int k = 0; k < source->rows - 1; k++) {
     for (int i = k + 1; i < source->rows; i++) {
-      // double factor = source->matrix[k][k] == 0.0 ? 0.0 : source->matrix[i][k] / source->matrix[k][k];
+      // double factor = source->matrix[k][k] == 0.0 ? 0.0 :
+      // source->matrix[i][k] / source->matrix[k][k];
       double factor = source->matrix[i][k] / source->matrix[k][k];
       for (int j = k; j < source->rows; j++) {
         source->matrix[i][j] -= factor * source->matrix[k][j];
@@ -287,8 +296,10 @@ int s21_gauss_elimination(const matrix_t *source) {
  */
 double s21_main_diagonal_multiple(const matrix_t *source) {
   double result = 1.0;
-  for (int i = 0; i < source->rows && result != 0.0; i++) if (source->matrix[i][i] == 0.0) result = 0.0;
-  for (int i = 0; i < source->rows && result != 0.0; i++) result *= source->matrix[i][i];
+  for (int i = 0; i < source->rows && result != 0.0; i++)
+    if (source->matrix[i][i] == 0.0) result = 0.0;
+  for (int i = 0; i < source->rows && result != 0.0; i++)
+    result *= source->matrix[i][i];
   return result;
 }
 

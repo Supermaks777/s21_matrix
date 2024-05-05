@@ -16,6 +16,7 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
   if (err_code == OK) err_code = s21_is_valid_matrix_full(A);
   if (err_code == OK) err_code = s21_squar_size(A);
   if (err_code == OK) err_code = s21_create_matrix(A->rows, A->columns, result);
+  printf("err_code: %d\n", err_code);
   if (err_code == OK) {
     if (A->rows == 1)
       result->matrix[0][0] = A->matrix[0][0];

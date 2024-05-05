@@ -12,6 +12,7 @@ void s21_remove_matrix(matrix_t *A) {
       }
     free(A->matrix);
     A->matrix = NULL;
-    A = NULL; //здесь я сбрасываю указатель на матрицу. корректно ли так делать? 
+    A->rows = 0;
+    A->columns = 0;
   }
 }

@@ -15,11 +15,11 @@ endif
 all: build_o s21_matrix.a
 
 clang:
-	cp ../materials/linters/.clang-format .
+	# cp ../materials/linters/.clang-format .
 	clang-format --style=Google -n functions/*.c tests/*.c tests/*.h *.h
 
 clang_replace:
-	cp ../materials/linters/.clang-format .
+	# cp ../materials/linters/.clang-format .
 	clang-format --style=Google -i functions/*.c tests/*.c tests/*.h *.h
 
 build_o:
@@ -100,6 +100,11 @@ test_another: tests/unit_test.c s21_matrix.a
 
 
 test_another2: tests/unit_tests.c s21_matrix.a
+	rm -rf *.o s21_matrix_test.gcda
+	gcc $(FLAGS_CC_DEV) $(FLAGS_GL) $(FLAGS_GCOV) $^ -o s21_matrix_test $(FLAGS_CHECK) 
+	./s21_matrix_test
+
+test_another3: tests/matrix_test.c s21_matrix.a
 	rm -rf *.o s21_matrix_test.gcda
 	gcc $(FLAGS_CC_DEV) $(FLAGS_GL) $(FLAGS_GCOV) $^ -o s21_matrix_test $(FLAGS_CHECK) 
 	./s21_matrix_test
